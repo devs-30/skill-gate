@@ -16,8 +16,9 @@ version:
 
 # Bump the version now: write the new SemVer into .claude-plugin/plugin.json
 # and package.json, commit it as "chore(release): vX.Y.Z", and tag that commit.
-# Does not push - run `git push` afterwards (the pre-push hook sends the tag).
-# No-op unless on main.
+# Does not push - run `git push` afterwards (the pre-push hook sends the tag,
+# and the Release workflow turns that tag into a GitHub Release with notes
+# auto-generated from the commits). No-op unless on main.
 version-bump:
 	@.githooks/auto-version.sh
 

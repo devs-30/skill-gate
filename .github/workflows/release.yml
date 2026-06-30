@@ -1,0 +1,32 @@
+name: Release
+
+# Create a GitHub Release whenever a version tag is pushed. The tag itself is
+# produced locally by `make version-bump` and travels to the remote via the
+# pre-push hook; this workflow turns that tag into a Release with notes
+# auto-generated from the conventional commits since the previous tag.
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+# Least privilege: only the permission needed to create a release.
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the tagged commit
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Create the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            --verify-tag
