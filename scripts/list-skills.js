@@ -151,11 +151,15 @@ function collectPlugins(out) {
 const collected = [];
 collectPersonal(path.join(HOME, '.claude', 'skills'), 'user', collected);
 collectPlugins(collected);
-collectPersonal(path.join(PROJECT_DIR, '.claude', 'skills'), 'project', collected);
+collectPersonal(
+  path.join(PROJECT_DIR, '.claude', 'skills'),
+  'project',
+  collected,
+);
 collectPersonal(
   path.join(PROJECT_DIR, '.claude', 'skills.local'),
   'project-local',
-  collected
+  collected,
 );
 
 // Dedup by name, keeping the highest-precedence tier.
@@ -163,8 +167,11 @@ const PRECEDENCE = { user: 0, plugin: 1, project: 2, 'project-local': 3 };
 const byName = new Map();
 for (const s of collected) {
   const prev = byName.get(s.name);
-  if (!prev || PRECEDENCE[s.tier] >= PRECEDENCE[prev.tier]) byName.set(s.name, s);
+  if (!prev || PRECEDENCE[s.tier] >= PRECEDENCE[prev.tier])
+    byName.set(s.name, s);
 }
 
-const skills = [...byName.values()].sort((a, b) => a.name.localeCompare(b.name));
+const skills = [...byName.values()].sort((a, b) =>
+  a.name.localeCompare(b.name),
+);
 process.stdout.write(JSON.stringify({ skills }, null, 2) + '\n');

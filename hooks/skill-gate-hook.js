@@ -63,7 +63,8 @@ let configError = null;
 try {
   config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 } catch (e) {
-  configError = e && e.code === 'ENOENT' ? 'no config file' : String(e && e.message);
+  configError =
+    e && e.code === 'ENOENT' ? 'no config file' : String(e && e.message);
 }
 
 const mode =
@@ -103,13 +104,15 @@ log(`configPath=${configPath}`);
 log(
   configError
     ? `config=UNREADABLE (${configError}) -> fail-open`
-    : `config: mode=${mode} debug=${debug} blocked=[${blocked.join(', ')}]`
+    : `config: mode=${mode} debug=${debug} blocked=[${blocked.join(', ')}]`,
 );
 
 // --- Resolve the invoked skill name from the Skill tool input. ---
 const toolInput = data && data.tool_input != null ? data.tool_input : {};
 const skillName =
-  toolInput && typeof toolInput.skill === 'string' ? toolInput.skill.trim() : '';
+  toolInput && typeof toolInput.skill === 'string'
+    ? toolInput.skill.trim()
+    : '';
 log(`tool_input.skill=${JSON.stringify(skillName)}`);
 
 if (!skillName) {
