@@ -8,8 +8,7 @@ description: Use when the user wants to gate, block, restrict, guard, or require
 Manage which skills are **gated** in this project. A gated skill is intercepted
 by the skill-gate plugin's PreToolUse hook before it runs and (in the default
 `confirm` mode) blocked until the user explicitly approves it via a YES / NO /
-NO+alternative prompt. This is the generalized version of the original "ask
-before brainstorming" hook.
+NO+alternative prompt.
 
 ## How the pieces fit
 

@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 // PreToolUse hook for the Skill tool. Gates any skill listed in a per-project
-// blocklist behind a confirmation prompt. Generalized port of the original
-// ask-before-brainstorm hook: instead of hardcoding one skill, it reads the
-// list of gated skills (and the mode) from a project config file.
+// blocklist behind a confirmation prompt. It reads the list of gated skills
+// (and the mode) from a project config file.
 //
 // Config file (read live on every invocation -- no restart needed for edits):
 //   <project>/.claude/skill-gate.json

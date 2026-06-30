@@ -1,9 +1,8 @@
 # skill-gate
 
 A Claude Code plugin that **gates selected skills behind a confirmation prompt**.
-It generalizes the classic "ask before brainstorming" hook: instead of hardcoding
-one skill, a per-project blocklist decides which skills are intercepted, and a
-bundled skill manages that list.
+A per-project blocklist decides which skills are intercepted, and a bundled skill
+manages that list.
 
 ## What it does
 
@@ -86,11 +85,4 @@ skill-gate/
 └── skills/
     └── focus-guard/
         └── SKILL.md          # manage the blocklist (add/remove/mode)
-```
-
-## Relationship to the original brainstorming hook
-
-This plugin runs **alongside** any existing `~/.claude/hooks/ask-before-brainstorm.js`
-hook — it does not touch it. To migrate fully, add `superpowers:brainstorming` to
-this plugin's blocklist and remove the old hook entry from `~/.claude/settings.json`.
 ```
