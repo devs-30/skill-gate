@@ -1,6 +1,6 @@
 {
   "name": "skill-gate",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Gate selected skills behind a confirmation prompt. Tooling-only package manifest (the plugin itself ships no runtime deps).",
   "license": "MIT",
