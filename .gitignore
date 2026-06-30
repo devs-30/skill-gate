@@ -1,3 +1,6 @@
+# Dependencies (dev tooling only: eslint, prettier)
+node_modules/
+
 # Editor / local dev cruft (not part of the plugin)
 .idea/
 .remember/
@@ -5,3 +8,5 @@
 
 # skill-gate debug log (created in repo root when debug is enabled)
 skill-gate-debug.log
+
+.env

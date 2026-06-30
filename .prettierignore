@@ -1,0 +1,15 @@
+# Dependencies
+node_modules/
+
+# Editor / local dev cruft (not part of the plugin)
+.idea/
+.remember/
+.claude/
+
+# Generated / runtime artifacts
+skill-gate-debug.log
+
+# Lockfile is owned by the package manager, not Prettier
+package-lock.json
+
+.env
