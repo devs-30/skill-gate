@@ -30,6 +30,20 @@ This repo doubles as a single-plugin marketplace (namespace `devs-30`).
    /plugin install skill-gate@devs-30
    ```
 
+Or, without a Claude Code session, run the equivalent commands in your terminal:
+
+1. Add the marketplace:
+
+   ```bash
+   claude plugin marketplace add devs-30/skill-gate
+   ```
+
+2. Install the plugin:
+
+   ```bash
+   claude plugin install skill-gate@devs-30
+   ```
+
 `devs-30/skill-gate` is the GitHub `<owner>/<repo>`.
 
 Restart Claude Code so the hook loads. The bundled skill and hook are then active.
