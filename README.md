@@ -101,6 +101,16 @@ skill-gate/
         └── SKILL.md          # manage the blocklist (add/remove/mode)
 ```
 
+## Star History
+
+<a href="https://star-history.com/#devs-30/skill-gate&Date">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=devs-30/skill-gate&type=Date&theme=dark" />
+    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=devs-30/skill-gate&type=Date" />
+    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=devs-30/skill-gate&type=Date" />
+  </picture>
+</a>
+
 ## License
 
 Released under the [MIT License](LICENSE).
