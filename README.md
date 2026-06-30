@@ -84,6 +84,31 @@ immediately — only enabling the plugin needs a restart):
   resolved skill name, blocklist match, mode branch, sentinel state, and final
   decision. Gitignore `skill-gate-debug.log` so it isn't committed.
 
+## Uninstall / cleanup
+
+The hook lives in the plugin's own `hooks/hooks.json` — it is **never written to
+your `~/.claude/settings.json`**. Claude Code loads it dynamically while the
+plugin is enabled, so uninstalling (or disabling) the plugin removes the hook
+automatically; there is nothing to unregister by hand.
+
+```
+/plugin uninstall skill-gate@devs-30
+```
+
+A few on-disk artifacts are left behind and can be removed manually if you want a
+clean slate:
+
+- `~/.claude/skill-gate/` — per-session sentinel files (self-expire after 6h, but
+  the directory stays):
+
+  ```bash
+  rm -rf ~/.claude/skill-gate
+  ```
+
+- `<project>/.claude/skill-gate.json` — the per-project blocklist, in any project
+  where you configured the gate.
+- `<project>/skill-gate-debug.log` — only if you ever set `"debug": true`.
+
 ## Layout
 
 ```
