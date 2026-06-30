@@ -14,7 +14,9 @@
 // Modes:
 //   confirm  Custom 3-option prompt (YES / NO / NO+alternative) driven by the
 //            model via AskUserQuestion. A one-shot, PER-SESSION + PER-SKILL
-//            sentinel lets an approved invocation pass through on the retry.
+//            sentinel file under ~/.claude/skill-gate/ lets an approved
+//            invocation pass through on the retry. (Stored in the user's private
+//            home dir rather than world-writable /tmp, and portable across OSes.)
 //   always   Always show the native permission dialog (plain ask, every time).
 //   off      Gating disabled; gated skills run without prompting.
 //
@@ -27,6 +29,7 @@
 'use strict';
 
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 
 function emit(obj) {
@@ -153,7 +156,34 @@ const rawSid =
     : 'nosession';
 const sid = rawSid.replace(/[^A-Za-z0-9._-]/g, '_');
 const skillSlug = skillName.replace(/[^A-Za-z0-9._-]/g, '_');
-const sentinel = `/tmp/claude-skill-gate-approved.${sid}.${skillSlug}`;
+
+// Sentinels live in the user's private home dir (not world-writable /tmp, so a
+// local attacker can't pre-create one to bypass the gate) and survive across
+// platforms (os.homedir() is always writable on Linux/macOS/Windows).
+const sentinelDir = path.join(os.homedir(), '.claude', 'skill-gate');
+try {
+  fs.mkdirSync(sentinelDir, { recursive: true });
+} catch {
+  /* best-effort; openSync below will surface a real failure */
+}
+
+// Best-effort cleanup of stale sentinels (>6h old) so crashed sessions don't
+// leave approval tokens lingering, and the pre-create window stays small.
+try {
+  const cutoff = Date.now() - 6 * 3600 * 1000;
+  for (const f of fs.readdirSync(sentinelDir)) {
+    const p = path.join(sentinelDir, f);
+    try {
+      if (fs.statSync(p).mtimeMs < cutoff) fs.unlinkSync(p);
+    } catch {
+      /* ignore individual files */
+    }
+  }
+} catch {
+  /* never let cleanup break the hook */
+}
+
+const sentinel = path.join(sentinelDir, `approved.${sid}.${skillSlug}`);
 log(`mode=confirm sentinel=${sentinel}`);
 
 // Approved on the previous turn -> consume the sentinel and allow this run.
@@ -175,8 +205,10 @@ const reason =
   `directly again. Ask the user with the AskUserQuestion tool (header: ` +
   `'Skill gate') using exactly these options: 1) 'YES' = run the skill; ` +
   `2) 'NO' = do not run, stop; 3) 'NO - tell me what to do instead' = do not ` +
-  `run, propose an alternative approach. If the user picks YES: run Bash ` +
-  `'touch ${sentinel}' and then invoke the "${skillName}" skill again. ` +
+  `run, propose an alternative approach. If the user picks YES: run this Bash ` +
+  `command (portable across Linux/macOS/Windows): ` +
+  `node -e "require('fs').writeFileSync(process.argv[1],'')" ${JSON.stringify(sentinel)} ` +
+  `and then invoke the "${skillName}" skill again. ` +
   `For NO: stop. For the third option: do not run the skill, propose what to ` +
   `do instead.`;
 
