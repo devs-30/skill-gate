@@ -100,3 +100,12 @@ skill-gate/
     └── focus-guard/
         └── SKILL.md          # manage the blocklist (add/remove/mode)
 ```
+
+## License
+
+Released under the [MIT License](LICENSE).
+
+You are free to use, modify, and redistribute this plugin, **provided you keep
+the copyright notice and license text** (`Copyright (c) 2026 Pawel Twardziak @
+Devs 3.0`) in all copies or substantial portions. In short: reuse freely, but
+keep the attribution.
