@@ -1,0 +1,11 @@
+{
+  "name": "skill-gate",
+  "version": "0.1.0",
+  "description": "Gate selected skills behind a confirmation prompt. Ships a PreToolUse hook driven by a per-project blocklist, plus a skill to manage that list.",
+  "author": {
+    "name": "Pawel Twardziak @ Devs 3.0",
+    "email": "freetools@devs30.com"
+  },
+  "keywords": ["hooks", "skills", "guardrails", "pretooluse", "gate"],
+  "license": "MIT"
+}

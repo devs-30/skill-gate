@@ -1,0 +1,15 @@
+{
+  "name": "devs-30",
+  "description": "devs-30 plugin marketplace.",
+  "owner": {
+    "name": "Pawel Twardziak @ Devs 3.0",
+    "email": "freetools@devs30.com"
+  },
+  "plugins": [
+    {
+      "name": "skill-gate",
+      "source": "./",
+      "description": "Gate selected skills behind a confirmation prompt, managed per project."
+    }
+  ]
+}

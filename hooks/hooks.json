@@ -1,0 +1,17 @@
+{
+  "description": "Skill gate - blocks configured skills behind a confirmation prompt (per-project blocklist).",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/skill-gate-hook.js\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
