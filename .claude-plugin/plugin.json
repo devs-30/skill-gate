@@ -1,6 +1,6 @@
 {
   "name": "skill-gate",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Gate selected skills behind a confirmation prompt. Ships a PreToolUse hook driven by a per-project blocklist, plus a skill to manage that list.",
   "author": {
     "name": "Pawel Twardziak @ Devs 3.0",
