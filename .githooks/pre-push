@@ -1,42 +1,23 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Guard: skip when called recursively (tag push from this hook)
+# Guard against the recursive tag push this hook triggers below.
 if [[ "${_AUTO_VERSION_PUSH:-}" == "1" ]]; then
   exit 0
 fi
 
 remote="$1"
 
-echo "=== Pre-push: auto-version ==="
-
-# Only auto-version on main branch
+# Versioning is done by `make version-bump`, which writes the new version into
+# the manifests, commits it, and tags that commit. This hook does NOT create
+# tags - it only makes sure existing version tags travel to the remote
+# alongside the commits being pushed.
 current_branch=$(git branch --show-current 2>/dev/null || echo "")
 if [[ "$current_branch" != "main" ]]; then
-  echo "Not on main - skipping auto-version."
-  echo "=== Pre-push: OK ==="
+  echo "Not on main - skipping tag sync."
   exit 0
 fi
 
-# Check if there are commits to push (local ahead of remote)
-remote_ref="refs/remotes/${remote}/main"
-if git rev-parse --verify "$remote_ref" >/dev/null 2>&1; then
-  ahead=$(git rev-list "${remote_ref}..HEAD" --count)
-  if [[ "$ahead" -eq 0 ]]; then
-    echo "No new commits to push - skipping auto-version."
-    echo "=== Pre-push: OK ==="
-    exit 0
-  fi
-fi
-
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-new_tag=$("${SCRIPT_DIR}/auto-version.sh")
-
-if [[ -n "$new_tag" ]]; then
-  echo "Tagged $new_tag - pushing to $remote..."
-  _AUTO_VERSION_PUSH=1 git push "$remote" "$new_tag"
-else
-  echo "No version bump needed."
-fi
-
+echo "=== Pre-push: syncing version tags ==="
+_AUTO_VERSION_PUSH=1 git push --tags "$remote" >/dev/null 2>&1 || true
 echo "=== Pre-push: OK ==="
